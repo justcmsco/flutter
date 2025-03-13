@@ -7,7 +7,7 @@ A simple, type-safe integration for [JustCMS](https://justcms.co) in your Flutte
 - **Strongly Typed Models:** Fully typed model classes for API responses.
 - **Dedicated Service:** All JustCMS API calls are encapsulated in one service class.
 - **Easy Integration:** Simply instantiate the service with your API token and project ID.
-- **Flexible Endpoints:** Supports fetching categories, pages (with filtering and pagination), a page by its slug, and a menu by its ID.
+- **Flexible Endpoints:** Supports fetching categories, pages (with filtering and pagination), a page by its slug, a menu by its ID, and layouts (single or multiple).
 - **Utility Methods:** Helpful functions for working with content blocks and images.
 
 ## Installation
@@ -148,6 +148,22 @@ The `JustCMSService` class provides the following methods:
   Future<Menu> menu = justCmsService.getMenuById('main-menu');
   ```
 
+- **getLayoutById(String id)**
+
+  Fetches a single layout by its ID.
+
+  ```dart
+  Future<Layout> layout = justCmsService.getLayoutById('footer');
+  ```
+
+- **getLayoutsByIds(List<String> ids)**
+
+  Fetches multiple layouts at once by providing a list of IDs.
+
+  ```dart
+  Future<List<Layout>> layouts = justCmsService.getLayoutsByIds(['footer', 'header']);
+  ```
+
 ### Utility Methods
 
 In addition to API calls, `JustCMSService` provides several utility functions:
@@ -176,6 +192,8 @@ The service wraps the following JustCMS API endpoints:
 - **Get Pages:** Retrieve pages with optional filtering (by category slug) and pagination.
 - **Get Page by Slug:** Retrieve detailed information about a specific page.
 - **Get Menu by ID:** Retrieve a menu and its items.
+- **Get Layout by ID:** Retrieve a single layout by its ID.
+- **Get Layouts by IDs:** Retrieve multiple layouts at once by specifying their IDs.
 
 For further details on each endpoint, refer to the [JustCMS Public API Documentation](https://justcms.co/api).
 

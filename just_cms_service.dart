@@ -485,6 +485,58 @@ class Menu {
   }
 }
 
+/**
+ * Layouts
+ */
+class LayoutItem {
+  final String label;
+  final String description;
+  final String uid;
+  final String type;
+  final dynamic value;
+
+  LayoutItem({
+    required this.label,
+    required this.description,
+    required this.uid,
+    required this.type,
+    required this.value,
+  });
+
+  factory LayoutItem.fromJson(Map<String, dynamic> json) {
+    return LayoutItem(
+      label: json['label'],
+      description: json['description'],
+      uid: json['uid'],
+      type: json['type'],
+      value: json['value'],
+    );
+  }
+}
+
+class Layout {
+  final String id;
+  final String name;
+  final List<LayoutItem> items;
+
+  Layout({
+    required this.id,
+    required this.name,
+    required this.items,
+  });
+
+  factory Layout.fromJson(Map<String, dynamic> json) {
+    var itemsJson = json['items'] as List;
+    List<LayoutItem> items =
+        itemsJson.map((e) => LayoutItem.fromJson(e)).toList();
+    return Layout(
+      id: json['id'],
+      name: json['name'],
+      items: items,
+    );
+  }
+}
+
 // ---------------------------------------------------------------------------
 // JustCMS Service
 // ---------------------------------------------------------------------------
@@ -576,6 +628,27 @@ class JustCMSService {
     return await _get(
       'menus/$id',
       fromJson: (json) => Menu.fromJson(json),
+    );
+  }
+
+  /// Retrieves a single layout by its ID.
+  Future<Layout> getLayoutById(String id) async {
+    return await _get(
+      'layouts/$id',
+      fromJson: (json) => Layout.fromJson(json),
+    );
+  }
+
+  /// Retrieves multiple layouts by their IDs.
+  /// 
+  /// [ids] - List of layout IDs to retrieve.
+  Future<List<Layout>> getLayoutsByIds(List<String> ids) async {
+    final idsString = ids.join(';');
+    return await _get(
+      'layouts/$idsString',
+      fromJson: (json) => (json as List)
+          .map((layoutJson) => Layout.fromJson(layoutJson))
+          .toList(),
     );
   }
 
